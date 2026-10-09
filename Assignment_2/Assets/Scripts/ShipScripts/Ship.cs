@@ -13,6 +13,7 @@ public abstract class Ship : MonoBehaviour
     public Bullet bullet;
     public string opponentTag;
     public GameObject explosion;
+    public AudioClip deathNoise;
 
     void Start()
     {
@@ -37,7 +38,13 @@ public abstract class Ship : MonoBehaviour
         if (health <= 0)
         { 
             Destroy(gameObject);
-            Instantiate(explosion, transform.position, Quaternion.identity);
+            
+            if (deathNoise != null)
+            {
+                GameObject deathSound = Instantiate(explosion, transform.position, Quaternion.identity);
+                deathSound.AddComponent<AudioSource>().PlayOneShot(deathNoise);
+                Destroy(deathSound, 3);
+            }
         }
     }
 }

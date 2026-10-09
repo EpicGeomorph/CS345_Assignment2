@@ -31,7 +31,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 26.05, y: -8.4, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -199,6 +199,7 @@ MonoBehaviour:
   bullet: {fileID: 6235478566647964899, guid: f1a00e77c49171f4aa56be7658b0a68b, type: 3}
   opponentTag: Player
   explosion: {fileID: 5247045119105070603, guid: e88eb0b110a09bb43ad3563de9cabdb0, type: 3}
+  deathNoise: {fileID: 8300000, guid: bbde4cee12071034c80eb1f97a356ec7, type: 3}
   chaseDist: 10
   roamDist: 20
   shootDist: 15
