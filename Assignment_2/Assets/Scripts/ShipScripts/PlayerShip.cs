@@ -10,6 +10,7 @@ public class PlayerShip : Ship // This makes it so that PlayerShip inherits meth
     private InputAction moveAction;
     private InputAction lookAction;
     private InputAction shootAction;
+    public Animator animator;
     void Awake() // Awake method runs before Start method
     {
         if (Instance == null)
@@ -49,5 +50,23 @@ public class PlayerShip : Ship // This makes it so that PlayerShip inherits meth
     void Update()
     {
         moveDirection = moveAction.ReadValue<UnityEngine.Vector2>().normalized; // determine where we move based on player input (WASD or arrow keys using Unity's new Input System
+
+        UnityEngine.Vector2 shootDirection = (GetMousePos() - new UnityEngine.Vector2(transform.position.x, transform.position.y)).normalized;
+        transform.eulerAngles = new UnityEngine.Vector3(0, 0, -90 + Mathf.Atan2(shootDirection.y, shootDirection.x) * 180 / Mathf.PI);
+
+        if (shootAction.IsPressed() && canShoot)
+        {
+            StartCoroutine(Shoot(shootDirection, shootForce));
+        }
+
+        animator.SetBool("isShooting", shootAction.IsPressed());
+    }
+
+    UnityEngine.Vector2 GetMousePos()
+    {
+        UnityEngine.Vector2 screenPos = lookAction.ReadValue<UnityEngine.Vector2>();
+        UnityEngine.Vector3 mousePos = new UnityEngine.Vector3(screenPos.x, screenPos.y, Camera.main.nearClipPlane);
+        UnityEngine.Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        return new UnityEngine.Vector2(worldPos.x, worldPos.y);
     }
 }

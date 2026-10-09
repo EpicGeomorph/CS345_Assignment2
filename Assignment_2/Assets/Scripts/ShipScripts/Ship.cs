@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.PlayerLoop;
 public abstract class Ship : MonoBehaviour
 {
     protected Rigidbody2D rigidBody;
@@ -9,6 +10,10 @@ public abstract class Ship : MonoBehaviour
     [SerializeField] protected float friction;
     protected Vector2 moveDirection;
     protected bool canShoot = true;
+    public Bullet bullet;
+    public string opponentTag;
+    public GameObject explosion;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -18,4 +23,21 @@ public abstract class Ship : MonoBehaviour
     abstract protected void CustomStart();
     abstract protected void Move();
     void FixedUpdate() { Move(); }
+    protected IEnumerator Shoot(Vector3 shootDirection, float shootForce)
+    {
+        Bullet newBullet = Instantiate(bullet, transform.position, Quaternion.identity);
+        newBullet.setTarget(opponentTag, shootDirection, shootForce);
+        canShoot = false;
+        yield return new WaitForSeconds(reloadTime);
+        canShoot = true;
+    }
+    public void takeDamage()
+    {
+        health = health - 1;
+        if (health <= 0)
+        { 
+            Destroy(gameObject);
+            Instantiate(explosion, transform.position, Quaternion.identity);
+        }
+    }
 }
